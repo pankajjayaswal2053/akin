@@ -7,6 +7,7 @@ import LoadingSpinner from '../ui/LoadingSpinner';
 import { motion } from 'framer-motion';
 import OptimizedImage from '../ui/OptimizedImage';
 import RoleDetailModal from '../ui/RoleDetailModal';
+import { getFunctionsBaseUrl } from '../../firebase';
 
 const culturePillars = [
     {
@@ -57,8 +58,8 @@ const CareersPage: React.FC = () => {
     useEffect(() => {
         const fetchRoles = async () => {
             try {
-                const functionsBaseUrl = process.env.REACT_APP_FUNCTIONS_BASE_URL;
-                const response = await fetch(`${functionsBaseUrl}/getCareers`);
+                const functionsBaseUrl = getFunctionsBaseUrl();
+                const response = await fetch(`${functionsBaseUrl}/getCareers?isPublished=true&orderBy=priority&orderDir=asc`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch career data');
                 }

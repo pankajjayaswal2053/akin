@@ -17,6 +17,7 @@ import StructuredData from '../seo/StructuredData';
 import OptimizedImage from '../ui/OptimizedImage';
 import InsightCard from '../ui/InsightCard';
 import { localInsights, Insight } from '../../data/insights';
+import { getFunctionsBaseUrl } from '../../firebase';
 import Section, { itemVariants } from '../layout/Section';
 import SectionHeader from '../ui/SectionHeader';
 
@@ -361,9 +362,8 @@ const HomePage: React.FC<HomePageProps> = ({ onSolutionClick }) => {
         const fetchAndSortInsights = async () => {
             let insightsData: Insight[] = [];
             try {
-                const functionsBaseUrl = process.env.REACT_APP_FUNCTIONS_BASE_URL;
-                if (!functionsBaseUrl) throw new Error("Functions URL not configured");
-                const response = await fetch(`${functionsBaseUrl}/getInsights`);
+                const functionsBaseUrl = getFunctionsBaseUrl();
+                const response = await fetch(`${functionsBaseUrl}/getInsights?isFeatured=false&orderBy=createdAt&orderDir=desc&limit=12`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch insights');
                 }
@@ -373,12 +373,14 @@ const HomePage: React.FC<HomePageProps> = ({ onSolutionClick }) => {
                 insightsData = localInsights;
             }
 
+            const availableInsights = insightsData.filter(i => !i.isFeatured);
+
             try {
                 const interests: { [key: string]: number } = JSON.parse(localStorage.getItem('userInterests') || '{}');
                 const interestKeys = Object.keys(interests);
 
                 if (interestKeys.length > 0) {
-                    const sorted = [...insightsData].sort((a, b) => {
+                    const sorted = [...availableInsights].sort((a, b) => {
                         const getScore = (insight: Insight) => {
                             let score = 0;
                             const topic = insight.topic.toLowerCase();
@@ -391,13 +393,13 @@ const HomePage: React.FC<HomePageProps> = ({ onSolutionClick }) => {
                         };
                         return getScore(b) - getScore(a);
                     });
-                     setSortedInsights(sorted.filter(i => !i.isFeatured).slice(0, 3));
+                    setSortedInsights(sorted.slice(0, 3));
                 } else {
-                     setSortedInsights(insightsData.filter(i => !i.isFeatured).slice(0, 3));
+                    setSortedInsights(availableInsights.slice(0, 3));
                 }
             } catch (sortError) {
                 console.error("Error sorting insights, using default.", sortError);
-                setSortedInsights(insightsData.filter(i => !i.isFeatured).slice(0, 3));
+                setSortedInsights(availableInsights.slice(0, 3));
             }
         };
 
