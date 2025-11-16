@@ -334,6 +334,27 @@ const partnerLogos = [
     { name: 'Snowflake', src: '/images/partners/snowflake.png' },
 ];
 
+const globalImpactStats = [
+    { value: '137', label: 'Mission-critical AI programs', description: 'Architected, deployed, and governed in production environments.' },
+    { value: '120 days', label: 'Blueprint to live ops', description: 'Average time from VELOCITY kickoff to a fully monitored launch.' },
+    { value: '$18B', label: 'Value protected and created', description: 'Risk, safety, and growth initiatives powered by cognitive agents.' },
+    { value: '23 industries', label: 'Activated worldwide', description: 'Heavy industry, finance, public sector, energy, and more.' },
+];
+
+const deliveryHighlights: { title: string; description: string; icon: React.ElementType }[] = [
+    { title: 'Living Intelligence Blueprint', description: 'A dynamic ontology that aligns the C-suite, operations, and engineers on the same source of truth.', icon: CubeTransparentIcon },
+    { title: 'Executive value modeling', description: 'Board-ready views that quantify ROI, resiliency, and regulatory impact every sprint.', icon: ArrowTrendingUpIcon },
+    { title: 'Unified telemetry wall', description: 'Live insights across data, models, and cognitive agents for every leader on the program.', icon: EyeIcon },
+    { title: 'Governance by design', description: 'Human-in-the-loop controls, auditability, and AI safety woven into every release.', icon: ShieldCheckIcon },
+];
+
+const executionMoments = [
+    { window: 'Weeks 0-3', title: 'Vision Architecture Sprint', description: 'Co-create the Unified Ontology, operating model, and value map with your leadership team.' },
+    { window: 'Weeks 4-8', title: 'Engineering the Core', description: 'Stand up secure data pipelines, model factories, and cognitive services aligned to the ontology.' },
+    { window: 'Weeks 9-14', title: 'Intelligence + Trust', description: 'Deploy cognitive agents with embedded safety, observability, and human-in-the-loop workflows.' },
+    { window: 'Weeks 15+', title: 'Expansion + Yield', description: 'Scale to new plants, markets, or functions while measuring compound ROI in a living dashboard.' },
+];
+
 const universalPainPoints = [
     { title: "The Leadership Problem", icon: BuildingOffice2Icon, subtitle: "AI strategy is stuck in PowerPoint. No clear path to operational ROI.", link: "/solutions" },
     { title: "The Engineer Problem", icon: LinkIcon, subtitle: "Data is siloed and messy. Impossible to build mission-critical systems on a fragile foundation.", link: "/thrive" },
@@ -456,6 +477,89 @@ const HomePage: React.FC<HomePageProps> = ({ onSolutionClick }) => {
               <Button to="/platform" primary={false} className="!text-stone !border-stone hover:!bg-stone hover:!text-charcoal">Explore the Platform</Button>
           </div>
         </Hero>
+
+        {/* Global Proof */}
+        <Section tone="dark" align="center" className="relative overflow-hidden">
+            <div className="relative">
+                <GraphicElement type="dots" className="pointer-events-none absolute -inset-x-12 -inset-y-8 text-electric-blue/10" />
+                <div className="relative z-10">
+                    <SectionHeader
+                        eyebrow="Global Proof"
+                        title="World-class programs in production."
+                        description="Akin teams live inside your operation until the Cognitive Agent Platform is delivering measurable value."
+                        align="center"
+                        maxWidth="lg"
+                    />
+                    <motion.div
+                        className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+                        variants={itemVariants}
+                    >
+                        {globalImpactStats.map((stat) => (
+                            <motion.div
+                                key={stat.label}
+                                variants={itemVariants}
+                                className="rounded-2xl border border-white/10 bg-white/10 p-6 backdrop-blur text-left"
+                            >
+                                <p className="text-3xl font-extrabold text-white">{stat.value}</p>
+                                <p className="mt-2 text-sm font-semibold uppercase tracking-widest text-electric-blue">{stat.label}</p>
+                                <p className="mt-3 text-sm text-gray-200">{stat.description}</p>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                </div>
+            </div>
+        </Section>
+
+        {/* Experience Layer */}
+        <Section tone="light" className="relative">
+            <div className="grid lg:grid-cols-[1.1fr,0.9fr] gap-12 items-start">
+                <motion.div variants={itemVariants} className="space-y-6">
+                    <SectionHeader
+                        eyebrow="Engagement"
+                        title="A single team for vision, engineering, and live operations."
+                        description="Every program pairs C-suite strategy with hands-on architects and operators so decisions translate into software immediately."
+                        maxWidth="lg"
+                    />
+                    <p className="text-base text-charcoal-light max-w-2xl">
+                        We embed our Operating Studio with your leadership, plant managers, and digital teams. The result is a shared source of truth, disciplined delivery rituals, and momentum that compounds week after week.
+                    </p>
+                    <div className="mt-6 grid gap-6 sm:grid-cols-2">
+                        {deliveryHighlights.map((highlight) => (
+                            <div key={highlight.title} className="rounded-2xl border border-gray-200/80 p-6 shadow-lg hover:-translate-y-1 transition-transform bg-white">
+                                <highlight.icon className="h-8 w-8 text-electric-blue" />
+                                <h3 className="mt-4 text-lg font-semibold text-charcoal">{highlight.title}</h3>
+                                <p className="mt-2 text-sm text-charcoal-light">{highlight.description}</p>
+                            </div>
+                        ))}
+                    </div>
+                </motion.div>
+                <motion.div variants={itemVariants}>
+                    <div className="rounded-3xl border border-gray-200/60 bg-gradient-to-br from-charcoal via-charcoal to-slate-900 p-8 text-white shadow-2xl">
+                        <p className="text-sm font-semibold tracking-[0.25em] uppercase text-electric-blue">Velocity Rhythm</p>
+                        <h3 className="mt-4 text-2xl font-bold">From vision to compound value in months.</h3>
+                        <div className="mt-8 space-y-8">
+                            {executionMoments.map((moment, index) => (
+                                <div key={moment.title} className="flex gap-4">
+                                    <div className="flex flex-col items-center">
+                                        <span className="flex h-10 w-10 items-center justify-center rounded-full border border-electric-blue text-electric-blue font-semibold">
+                                            {index + 1}
+                                        </span>
+                                        {index !== executionMoments.length - 1 && (
+                                            <span className="mt-2 h-full w-px bg-electric-blue/30" aria-hidden="true"></span>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <p className="text-xs uppercase tracking-[0.25em] text-electric-blue/80">{moment.window}</p>
+                                        <h4 className="mt-1 text-lg font-semibold">{moment.title}</h4>
+                                        <p className="mt-1 text-sm text-gray-300">{moment.description}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </motion.div>
+            </div>
+        </Section>
 
         {/* Universal Pain Points */}
         <Section tone="soft" align="center">
