@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId } from 'react';
 import { motion } from 'framer-motion';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
@@ -18,21 +18,32 @@ interface CookieSettingsModalProps {
 }
 
 const Toggle: React.FC<{ label: string; enabled: boolean; onToggle: (enabled: boolean) => void; disabled?: boolean; description: string; }> = ({ label, enabled, onToggle, disabled = false, description }) => {
+    const labelId = useId();
+    const descriptionId = useId();
+
     return (
         <div className={`py-4 border-b border-gray-200 ${disabled ? 'opacity-60' : ''}`}>
             <div className="flex justify-between items-center">
-                <h4 className="font-semibold text-charcoal">{label}</h4>
+                <h4 id={labelId} className="font-semibold text-charcoal">
+                    {label}
+                </h4>
                 <button
+                    type="button"
                     onClick={() => !disabled && onToggle(!enabled)}
                     className={`relative inline-flex items-center h-6 rounded-full w-11 transition-colors ${enabled ? 'bg-electric-blue' : 'bg-gray-300'} ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
                     disabled={disabled}
                     aria-checked={enabled}
                     role="switch"
+                    aria-labelledby={labelId}
+                    aria-describedby={descriptionId}
+                    aria-disabled={disabled}
                 >
                     <span className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${enabled ? 'translate-x-6' : 'translate-x-1'}`} />
                 </button>
             </div>
-            <p className="text-sm text-charcoal-light mt-2">{description}</p>
+            <p id={descriptionId} className="text-sm text-charcoal-light mt-2">
+                {description}
+            </p>
         </div>
     );
 };
@@ -58,8 +69,16 @@ const CookieSettingsModal: React.FC<CookieSettingsModalProps> = ({ isOpen, onClo
 
     if (!isOpen) return null;
 
+    const titleId = 'cookie-settings-title';
+
     return (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[1001] flex items-center justify-center p-4" onClick={onClose} aria-modal="true" role="dialog">
+        <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[1001] flex items-center justify-center p-4"
+            onClick={onClose}
+            aria-modal="true"
+            role="dialog"
+            aria-labelledby={titleId}
+        >
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -69,7 +88,9 @@ const CookieSettingsModal: React.FC<CookieSettingsModalProps> = ({ isOpen, onClo
                 className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
             >
                 <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-                    <h3 className="text-xl font-bold text-charcoal">Customize Cookie Consent</h3>
+                    <h3 id={titleId} className="text-xl font-bold text-charcoal">
+                        Customize Cookie Consent
+                    </h3>
                     <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-100" aria-label="Close modal">
                         <XMarkIcon className="h-6 w-6 text-charcoal-light" />
                     </button>

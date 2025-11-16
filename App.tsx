@@ -4,12 +4,7 @@ import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Header } from './components/layout/Header';
 import Footer from './components/layout/Footer';
-import InsightModal from './components/ui/InsightModal';
-import ScrollProgressBar from './components/ui/ScrollProgressBar';
-import CookieConsent from './components/ui/CookieConsent';
 import LoadingSpinner from './components/ui/LoadingSpinner';
-import ScrollToTopButton from './components/ui/ScrollToTopButton';
-import SearchModal from './components/ui/SearchModal';
 
 // Lazy load all page components for code splitting
 const HomePage = lazy(() => import('./components/pages/HomePage'));
@@ -60,6 +55,11 @@ const DataAndAnalyticsPage = lazy(() => import('./components/pages/solutions/Dat
 const CybersecurityPage = lazy(() => import('./components/pages/solutions/CybersecurityPage'));
 const AutonomousOperationsPage = lazy(() => import('./components/pages/solutions/AutonomousOperationsPage'));
 const HowWeDoItPage = lazy(() => import('./components/pages/HowWeDoItPage'));
+const ScrollProgressBar = lazy(() => import('./components/ui/ScrollProgressBar'));
+const InsightModal = lazy(() => import('./components/ui/InsightModal'));
+const SearchModal = lazy(() => import('./components/ui/SearchModal'));
+const CookieConsent = lazy(() => import('./components/ui/CookieConsent'));
+const ScrollToTopButton = lazy(() => import('./components/ui/ScrollToTopButton'));
 
 
 // VELOCITY pages
@@ -211,7 +211,9 @@ const App: React.FC = () => {
     <HashRouter>
         <>
           <InterestTracker />
-          <ScrollProgressBar />
+          <Suspense fallback={null}>
+            <ScrollProgressBar />
+          </Suspense>
           <ScrollToTop />
           <div className={`flex flex-col min-h-screen bg-white text-charcoal transition-opacity duration-500 ${isReady ? 'opacity-100' : 'opacity-0'}`}>
             <Header onSearchOpen={handleSearchOpen} />
@@ -293,10 +295,18 @@ const App: React.FC = () => {
             </main>
             <Footer />
           </div>
-          <InsightModal content={activeContent} onClose={handleCloseContent} />
-          <SearchModal isOpen={isSearchOpen} onClose={handleSearchClose} />
-          <CookieConsent />
-          <ScrollToTopButton />
+          <Suspense fallback={null}>
+            <InsightModal content={activeContent} onClose={handleCloseContent} />
+          </Suspense>
+          <Suspense fallback={null}>
+            <SearchModal isOpen={isSearchOpen} onClose={handleSearchClose} />
+          </Suspense>
+          <Suspense fallback={null}>
+            <CookieConsent />
+          </Suspense>
+          <Suspense fallback={null}>
+            <ScrollToTopButton />
+          </Suspense>
         </>
     </HashRouter>
   );
