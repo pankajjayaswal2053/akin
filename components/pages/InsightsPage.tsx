@@ -10,6 +10,7 @@ import CallToActionSection from '../ui/CallToActionSection';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import LoadingSpinner from '../ui/LoadingSpinner';
 import { localInsights, Insight } from '../../data/insights';
+import { getFunctionsBaseUrl } from '../../firebase';
 
 const topics = ["All", "AI Maturity", "Data Ontology", "Generative AI", "Supply Chain", "Energy", "Finance"];
 const types = ["All", "Blog", "Report", "Whitepaper", "Analysis", "Viewpoint"];
@@ -29,9 +30,8 @@ const InsightsPage: React.FC<InsightsPageProps> = ({ onInsightClick }) => {
         const fetchInsights = async () => {
             setIsLoading(true);
             try {
-                const functionsBaseUrl = process.env.REACT_APP_FUNCTIONS_BASE_URL;
-                if (!functionsBaseUrl) throw new Error("Functions URL not configured");
-                const response = await fetch(`${functionsBaseUrl}/getInsights`);
+                const functionsBaseUrl = getFunctionsBaseUrl();
+                const response = await fetch(`${functionsBaseUrl}/getInsights?orderBy=createdAt&orderDir=desc`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch insights');
                 }

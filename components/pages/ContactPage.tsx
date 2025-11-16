@@ -5,6 +5,7 @@ import { EnvelopeIcon, UserGroupIcon, BuildingOffice2Icon, WrenchScrewdriverIcon
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../ui/Button';
 import { Link } from 'react-router-dom';
+import { getFunctionsBaseUrl } from '../../firebase';
 
 const offices = [
   { name: 'Singapore (HQ)', flag: '🇸🇬' },
@@ -100,7 +101,7 @@ const ContactPage: React.FC = () => {
         if (validate()) {
             setFormState('submitting');
             try {
-                const functionsBaseUrl = process.env.REACT_APP_FUNCTIONS_BASE_URL;
+                const functionsBaseUrl = getFunctionsBaseUrl();
                 const response = await fetch(`${functionsBaseUrl}/submitLead`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

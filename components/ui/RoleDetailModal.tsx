@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { XMarkIcon, ChevronLeftIcon, CheckCircleIcon, ExclamationTriangleIcon, ArrowPathIcon, DocumentArrowUpIcon } from '@heroicons/react/24/outline';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Role } from '../pages/CareersPage';
+import { getFunctionsBaseUrl } from '../../firebase';
 
 interface RoleDetailModalProps {
   role: Role | null;
@@ -76,7 +77,7 @@ const RoleDetailModal: React.FC<RoleDetailModalProps> = ({ role, onClose }) => {
     
     setView('submitting');
     try {
-        const functionsBaseUrl = process.env.REACT_APP_FUNCTIONS_BASE_URL;
+        const functionsBaseUrl = getFunctionsBaseUrl();
         const response = await fetch(`${functionsBaseUrl}/submitApplication`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

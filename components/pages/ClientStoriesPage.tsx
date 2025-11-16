@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ClientStoryCard from '../ui/ClientStoryCard';
 import CallToActionSection from '../ui/CallToActionSection';
 import LoadingSpinner from '../ui/LoadingSpinner';
+import { getFunctionsBaseUrl } from '../../firebase';
 
 interface Story {
   id: string;
@@ -49,15 +50,8 @@ const ClientStoriesPage: React.FC = () => {
      useEffect(() => {
         const fetchStories = async () => {
             try {
-                const functionsBaseUrl = process.env.REACT_APP_FUNCTIONS_BASE_URL;
-                if (!functionsBaseUrl) {
-                    console.warn("Firebase Functions URL not configured, using static client stories.");
-                    setStories(staticStories);
-                    setError(null);
-                    return;
-                }
-                
-                const response = await fetch(`${functionsBaseUrl}/getClientStories`);
+                const functionsBaseUrl = getFunctionsBaseUrl();
+                const response = await fetch(`${functionsBaseUrl}/getClientStories?isPublished=true&orderBy=createdAt&orderDir=desc`);
                 if (!response.ok) {
                     console.warn(`Failed to fetch client stories (status: ${response.status}), using static fallback data.`);
                     setStories(staticStories);

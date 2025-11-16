@@ -1,0 +1,10 @@
+node_modules
+functions/node_modules
+build
+dist
+.env
+.env.*
+.firebase
+firebase-debug.log
+npm-debug.log*
+yarn-error.log*
